@@ -20,7 +20,22 @@
   
   <script src="../minibus.js"></script>
   <script>
-    
+      var bus = Minibus.create();
+      var times = 1;
+      bus.on( 'myEvent', function( param1 ) {
+        console.log( param1.msg );
+      } );
+
+      bus.once( 'onlyEvent', function( param1 ) {
+        console.log( 'I executed %d - %s', times, param1.msg );
+        times++;
+      } );
+
+      bus.emit( 'myEvent', { msg: 'hello' } );
+      bus.emit( 'myEvent', { msg: 'world'} );
+      bus.emit( 'onlyEvent', { msg: 'dsadasa' } );
+      bus.emit( 'onlyEvent', { msg: 'hello' } );
+      bus.emit( 'onlyEvent', { msg: 'dsadasa' } );
   </script>
 </body>
 </html>

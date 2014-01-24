@@ -1,4 +1,4 @@
-/*! minibus - v2.2.0 - 2014-01-13
+/*! minibus - v2.2.0 - 2014-01-24
  * https://github.com/axelpale/minibus
  *
  * Copyright (c) 2014 Akseli Palen <akseli.palen@gmail.com>;
@@ -136,7 +136,12 @@ var Minibus = (function () {
   
   
   var _once = function (key, fun) {
-    throw 'Not implemented.';
+
+    var route = this.on( key, fun );
+    route.limit = 1;
+
+    return route;
+
   };
   
   // See Node.js events.EventEmitter.once
@@ -327,6 +332,13 @@ var Minibus = (function () {
       routes = this.keyRoutes[key];
       for (i = 0; i < routes.length; i += 1) {
         routes[i].fun.apply(context, emitArgs);
+
+        // If limit prop exists
+        // Removed currently executed event
+        if( routes[ i ].limit ) {
+          this.off( routes[ i ].key );
+        }
+        
       }
     }
     // else
